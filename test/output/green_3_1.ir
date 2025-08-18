@@ -1,0 +1,2 @@
+0: Quadruple(op='FUNC_BEGIN', arg1='main', arg2=0, result=None)
+1: Quadruple(op='FUNC_END', arg1='main', arg2=None, result=None)
