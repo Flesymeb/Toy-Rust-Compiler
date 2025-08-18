@@ -14,6 +14,9 @@ from parser import Parser, ParseError
 from ir_generator import IRGenerator
 from ir_writer import save_ir_to_file
 
+# from codegen import X86AsmGenerator
+from codegen2 import MIPSCodeGenerator
+
 
 def main():
     import sys
@@ -22,7 +25,10 @@ def main():
     args = sys.argv[1:]
     test_dir = os.path.join(os.path.dirname(__file__), "test")
     output_dir = os.path.join(test_dir, "output")
-    os.makedirs(output_dir, exist_ok=True)
+    ir_dir = os.path.join(output_dir, "ir")
+    asm_dir = os.path.join(output_dir, "asm")
+    os.makedirs(ir_dir, exist_ok=True)
+    os.makedirs(asm_dir, exist_ok=True)
 
     def run_one_rs(src_file, ir_file, show_name=True):
         fname = os.path.basename(src_file)
@@ -40,8 +46,20 @@ def main():
             print("\n--- IR (四元式) ---")
             for quad in irgen.quads:
                 print(quad)
-            save_ir_to_file(irgen.quads, ir_file)
-            print(f"\n中间代码已保存到: output/{os.path.basename(ir_file)}")
+            # 保存中间代码
+            ir_file_real = os.path.join(ir_dir, os.path.basename(ir_file))
+            save_ir_to_file(irgen.quads, ir_file_real)
+            print(f"\n中间代码已保存到: output/ir/{os.path.basename(ir_file)}")
+
+            print("\n--- 汇编代码 ---")
+            asm_file = os.path.join(
+                asm_dir, os.path.basename(ir_file).rsplit(".", 1)[0] + ".asm"
+            )
+            asm_gen = MIPSCodeGenerator(irgen.quads)
+            with open(asm_file, "w") as f:
+                f.write(asm_gen.gen_asm())
+            print(f"汇编代码已保存到: output/asm/{os.path.basename(asm_file)}")
+
         except ParseError as e:
             print(f"[语法错误] {e}")
         except Exception as e:
@@ -53,7 +71,7 @@ def main():
         if not os.path.isabs(src_file):
             src_file = os.path.abspath(src_file)
         fname = os.path.basename(src_file)
-        ir_file = os.path.join(output_dir, fname.rsplit(".", 1)[0] + ".ir")
+        ir_file = fname.rsplit(".", 1)[0] + ".ir"
         run_one_rs(src_file, ir_file, show_name=False)
     else:
         # 批量测试test目录
@@ -63,7 +81,7 @@ def main():
             return
         for fname in sorted(rs_files):
             src_file = os.path.join(test_dir, fname)
-            ir_file = os.path.join(output_dir, fname.rsplit(".", 1)[0] + ".ir")
+            ir_file = fname.rsplit(".", 1)[0] + ".ir"
             run_one_rs(src_file, ir_file)
 
 
