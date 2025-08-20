@@ -1,0 +1,6 @@
+# 抽象语法树 (Abstract Syntax Tree)
+# 生成时间: 2025-08-20 19:37:06.351700
+
+ProgramNode
+  FunctionDeclNode: token=Token(IDENTIFIER, 'main', L1C4), return_type=None, body=BlockNode([]), name=main
+    ParamNode: name_internal=VarInternalDecl(mut a), param_type=i32

@@ -1,0 +1,26 @@
+# 抽象语法树 (Abstract Syntax Tree)
+# 生成时间: 2025-08-20 19:38:29.224567
+
+ProgramNode
+  FunctionDeclNode: token=Token(IDENTIFIER, 'main', L1C4), return_type=None, body=BlockNode([LetDeclNode(VarInternalDecl(mut i): i32 = Number(0)), LetDeclNode(VarInternalDecl(mut sum): i32 = Number(0)), WhileNode(cond=BinOp(Ident(i) < Number(10)), body=BlockNode([AssignNode(to=Ident(i), expr=BinOp(Ident(i) + Number(1))), IfNode(cond=BinOp(BinOp(Ident(i) % Number(2)) == Number(0)), then=BlockNode([ContinueNode]), else_if=[], else=None), AssignNode(to=Ident(sum), expr=BinOp(Ident(sum) + Ident(i)))]))]), name=main
+    BlockNode
+      LetDeclNode: var_internal_decl=VarInternalDecl(mut i), var_type=i32, init_expr=Number(0)
+      LetDeclNode: var_internal_decl=VarInternalDecl(mut sum), var_type=i32, init_expr=Number(0)
+      WhileNode: condition=BinOp(Ident(i) < Number(10)), body=BlockNode([AssignNode(to=Ident(i), expr=BinOp(Ident(i) + Number(1))), IfNode(cond=BinOp(BinOp(Ident(i) % Number(2)) == Number(0)), then=BlockNode([ContinueNode]), else_if=[], else=None), AssignNode(to=Ident(sum), expr=BinOp(Ident(sum) + Ident(i)))])
+        BlockNode
+          AssignNode: assignable_element=Ident(i), expr=BinOp(Ident(i) + Number(1))
+            BinaryOpNode: left=Ident(i), op_token=Token(PLUS, '+', L5C15), right=Number(1)
+              IdentifierNode: token=Token(IDENTIFIER, 'i', L5C13), name=i
+              NumberNode: token=Token(NUMBER, 1, L5C17), value=1
+          IfNode: condition=BinOp(BinOp(Ident(i) % Number(2)) == Number(0)), then_block=BlockNode([ContinueNode]), else_block=None
+            BinaryOpNode: left=BinOp(Ident(i) % Number(2)), op_token=Token(EQ, '==', L6C18), right=Number(0)
+              BinaryOpNode: left=Ident(i), op_token=Token(MOD, '%', L6C14), right=Number(2)
+                IdentifierNode: token=Token(IDENTIFIER, 'i', L6C12), name=i
+                NumberNode: token=Token(NUMBER, 2, L6C16), value=2
+              NumberNode: token=Token(NUMBER, 0, L6C21), value=0
+            BlockNode
+              ContinueNode
+          AssignNode: assignable_element=Ident(sum), expr=BinOp(Ident(sum) + Ident(i))
+            BinaryOpNode: left=Ident(sum), op_token=Token(PLUS, '+', L9C19), right=Ident(i)
+              IdentifierNode: token=Token(IDENTIFIER, 'sum', L9C15), name=sum
+              IdentifierNode: token=Token(IDENTIFIER, 'i', L9C21), name=i

@@ -1,12 +1,12 @@
 """
-Description  : 适用于单遍编译的Rust-like语言词法分析器 (修复版)
-Author       : Hyoung (修复: GitHub Copilot)
+Description  : 适用于单遍编译的Rust-like语言词法分析器
+Author       : Hyoung
 Date         : 2025-08-18 18:54:14
-LastEditTime : 2025-08-21
+LastEditTime : 2025-08-21 19:37:00
 FilePath     : \\课程设计\\rust-like-compiler\\temp_main.py
 """
 
-# 课设主程序入口，组织编译流程，修复了导入问题
+# 课设主程序入口，组织编译流程
 
 import sys
 import os
@@ -46,14 +46,77 @@ except ImportError as e:
     sys.exit(1)
 
 
+def format_ast(node, indent=0):
+    """格式化AST为文本格式"""
+    if node is None:
+        return ""
+
+    result = " " * indent + f"{node.__class__.__name__}"
+
+    # 收集非列表类型的属性用于显示
+    attrs = {}
+    for key, value in node.__dict__.items():
+        if not isinstance(value, list) and not key.startswith("_"):
+            attrs[key] = value
+
+    if attrs:
+        result += ": " + ", ".join(f"{k}={v}" for k, v in attrs.items())
+
+    result += "\n"
+
+    # 检查不同类型的子节点属性
+    children = []
+    if hasattr(node, "declarations"):
+        children = node.declarations
+    elif hasattr(node, "statements"):
+        children = node.statements
+    elif hasattr(node, "children"):
+        children = node.children
+    elif hasattr(node, "params") and node.params:
+        children.extend(node.params)
+    elif hasattr(node, "body") and node.body:
+        children = [node.body]
+    elif hasattr(node, "then_block") and node.then_block:
+        children = [node.condition, node.then_block]
+        if node.else_block:
+            children.append(node.else_block)
+    elif hasattr(node, "expr") and node.expr:
+        children = [node.expr]
+    elif hasattr(node, "left") and node.left:
+        children = [node.left, node.right]
+
+    # 递归处理子节点
+    if children:
+        for child in children:
+            if child is not None:  # 确保子节点不为空
+                result += format_ast(child, indent + 2)
+
+    return result
+
+
+def save_ast_to_file(ast, file_path):
+    """保存AST到文件"""
+    try:
+        with open(file_path, "w", encoding="utf-8") as f:
+            f.write("# 抽象语法树 (Abstract Syntax Tree)\n")
+            f.write(
+                "# 生成时间: " + str(__import__("datetime").datetime.now()) + "\n\n"
+            )
+            f.write(format_ast(ast))
+    except Exception as e:
+        print(f"保存AST文件时出错: {e}")
+
+
 def main():
     args = sys.argv[1:]
     test_dir = os.path.join(os.path.dirname(__file__), "test")
     output_dir = os.path.join(test_dir, "output")
     ir_dir = os.path.join(output_dir, "ir")
     asm_dir = os.path.join(output_dir, "asm")
+    ast_dir = os.path.join(output_dir, "ast")
     os.makedirs(ir_dir, exist_ok=True)
     os.makedirs(asm_dir, exist_ok=True)
+    os.makedirs(ast_dir, exist_ok=True)
 
     if not args:
         print("使用方法: python main.py <源文件路径> [--ir] [--asm]")
@@ -84,6 +147,7 @@ def main():
     name_without_ext = os.path.splitext(base_name)[0]
     ir_path = os.path.join(ir_dir, f"{name_without_ext}.ir")
     asm_path = os.path.join(asm_dir, f"{name_without_ext}.asm")
+    ast_path = os.path.join(ast_dir, f"{name_without_ext}.ast")
 
     try:
         with open(source_path, "r", encoding="utf-8") as f:
@@ -104,6 +168,10 @@ def main():
             # 解析程序
             ast = parser.parse_program()
             print("语法分析成功")
+
+            # 保存AST到文件
+            save_ast_to_file(ast, ast_path)
+            print(f"AST已保存到 {ast_path}")
 
             # 生成IR
             irgen.generate(ast)

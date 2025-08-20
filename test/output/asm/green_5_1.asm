@@ -9,16 +9,16 @@ j main
 
 main:
 li $s0, 5
-	sw $s0, 0($sp)
+	sw $s0, 4($sp)
 L0:
-lw $s0, 0($sp)
+lw $s0, 4($sp)
 li $s1, 0
 	slt $s0, $s1, $s0
 	beq $s0, $zero, L1
-lw $s0, 0($sp)
+lw $s0, 4($sp)
 li $s1, 1
 	sub $s0, $s0, $s1
-	sw $s0, 0($sp)
+	sw $s0, 4($sp)
 	j L0
 L1:
 	j end

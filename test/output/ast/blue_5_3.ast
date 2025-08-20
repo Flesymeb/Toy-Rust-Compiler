@@ -1,0 +1,8 @@
+# 抽象语法树 (Abstract Syntax Tree)
+# 生成时间: 2025-08-20 19:38:29.083660
+
+ProgramNode
+  FunctionDeclNode: token=Token(IDENTIFIER, 'main', L1C4), return_type=None, body=BlockNode([LoopNode(body=BlockNode([]))]), name=main
+    BlockNode
+      LoopNode: body=BlockNode([])
+        BlockNode

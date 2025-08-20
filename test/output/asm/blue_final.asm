@@ -33,13 +33,13 @@ test_group5:
 li $s0, 0
 	sw $s0, sum1
 li $s1, 1
-	sw $s1, 64($sp)
+	sw $s1, 60($sp)
 L0:
-lw $s0, 64($sp)
+lw $s0, 60($sp)
 li $s1, 10
 	slt $s0, $s0, $s1
 	beq $s0, $zero, L1
-lw $s0, 64($sp)
+lw $s0, 60($sp)
 	sw $s0, i
 lw $s1, sum1
 lw $s2, i
@@ -89,12 +89,12 @@ test_group7:
 lw $s0, x
 	mul $s1, $s0, $s0
 	add $s1, $s1, $s0
-	sw $s1, 52($sp)
+	sw $s1, 20($sp)
 lw $s2, y
 	mul $s3, $s0, $s2
-lw $s4, 52($sp)
+lw $s4, 20($sp)
 	add $s4, $s4, $s3
-	sw $s4, 52($sp)
+	sw $s4, 20($sp)
 li $s3, None
 	sw $s3, z
 lw $s5, z
@@ -106,16 +106,16 @@ lw $s0, z
 li $s1, 5
 	sub $s2, $s0, $s1
 li $s3, None
-	sw $s3, 8($sp)
+	sw $s3, 44($sp)
 	j L11
 L10:
 lw $s0, z
 li $s1, 5
 	add $s2, $s0, $s1
 li $s3, None
-	sw $s3, 8($sp)
+	sw $s3, 44($sp)
 L11:
-lw $s0, 8($sp)
+lw $s0, 44($sp)
 	sw $s0, result
 	lw $v0, result
 	lw $ra, 4($sp)

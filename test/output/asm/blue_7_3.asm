@@ -17,13 +17,13 @@ li $s2, 0
 	beq $s1, $zero, L1
 L0:
 li $s0, None
-	sw $s0, 4($sp)
+	sw $s0, 0($sp)
 	j L2
 L1:
 li $s0, None
-	sw $s0, 4($sp)
+	sw $s0, 0($sp)
 L2:
-lw $s0, 4($sp)
+lw $s0, 0($sp)
 	sw $s0, b
 	j end
 

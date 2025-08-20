@@ -1,0 +1,15 @@
+# 抽象语法树 (Abstract Syntax Tree)
+# 生成时间: 2025-08-20 19:37:06.910578
+
+ProgramNode
+  FunctionDeclNode: token=Token(IDENTIFIER, 'main', L1C4), return_type=None, body=BlockNode([LetDeclNode(VarInternalDecl(mut n): i32), AssignNode(to=Ident(n), expr=Number(5)), WhileNode(cond=BinOp(Ident(n) > Number(0)), body=BlockNode([AssignNode(to=Ident(n), expr=BinOp(Ident(n) - Number(1)))]))]), name=main
+    BlockNode
+      LetDeclNode: var_internal_decl=VarInternalDecl(mut n), var_type=i32, init_expr=None
+      AssignNode: assignable_element=Ident(n), expr=Number(5)
+        NumberNode: token=Token(NUMBER, 5, L3C9), value=5
+      WhileNode: condition=BinOp(Ident(n) > Number(0)), body=BlockNode([AssignNode(to=Ident(n), expr=BinOp(Ident(n) - Number(1)))])
+        BlockNode
+          AssignNode: assignable_element=Ident(n), expr=BinOp(Ident(n) - Number(1))
+            BinaryOpNode: left=Ident(n), op_token=Token(MINUS, '-', L4C20), right=Number(1)
+              IdentifierNode: token=Token(IDENTIFIER, 'n', L4C19), name=n
+              NumberNode: token=Token(NUMBER, 1, L4C21), value=1

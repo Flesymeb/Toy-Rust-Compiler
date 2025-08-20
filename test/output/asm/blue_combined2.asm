@@ -21,7 +21,7 @@ j main
 
 main:
 li $s0, 1
-	sw $s0, 40($sp)
+	sw $s0, 8($sp)
 li $s1, 2
 	sw $s1, b
 li $s2, 0
@@ -47,13 +47,13 @@ L4:
 L5:
 	j L0
 L1:
-lw $s0, 40($sp)
+lw $s0, 8($sp)
 	mul $s0, $s0, $s0
-	sw $s0, 36($sp)
-lw $s1, 36($sp)
+	sw $s0, 32($sp)
+lw $s1, 32($sp)
 lw $s2, b
 	add $s1, $s1, $s2
-	sw $s1, 36($sp)
+	sw $s1, 32($sp)
 li $s3, None
 	sw $s3, c
 lw $s4, c
@@ -65,16 +65,16 @@ lw $s0, c
 li $s1, 5
 	sub $s2, $s0, $s1
 li $s3, None
-	sw $s3, 16($sp)
+	sw $s3, 28($sp)
 	j L8
 L7:
 lw $s0, c
 li $s1, 5
 	add $s2, $s0, $s1
 li $s3, None
-	sw $s3, 16($sp)
+	sw $s3, 28($sp)
 L8:
-lw $s0, 16($sp)
+lw $s0, 28($sp)
 	sw $s0, d
 	j end
 

@@ -1,0 +1,19 @@
+# 抽象语法树 (Abstract Syntax Tree)
+# 生成时间: 2025-08-20 19:38:29.153653
+
+ProgramNode
+  FunctionDeclNode: token=Token(IDENTIFIER, 'main', L1C4), return_type=None, body=BlockNode([LetDeclNode(VarInternalDecl(mut i): i32 = Number(0)), WhileNode(cond=BinOp(Ident(i) < Number(10)), body=BlockNode([AssignNode(to=Ident(i), expr=BinOp(Ident(i) + Number(1))), IfNode(cond=BinOp(Ident(i) > Number(5)), then=BlockNode([BreakNode(expr=None)]), else_if=[], else=None)]))]), name=main
+    BlockNode
+      LetDeclNode: var_internal_decl=VarInternalDecl(mut i), var_type=i32, init_expr=Number(0)
+      WhileNode: condition=BinOp(Ident(i) < Number(10)), body=BlockNode([AssignNode(to=Ident(i), expr=BinOp(Ident(i) + Number(1))), IfNode(cond=BinOp(Ident(i) > Number(5)), then=BlockNode([BreakNode(expr=None)]), else_if=[], else=None)])
+        BlockNode
+          AssignNode: assignable_element=Ident(i), expr=BinOp(Ident(i) + Number(1))
+            BinaryOpNode: left=Ident(i), op_token=Token(PLUS, '+', L4C15), right=Number(1)
+              IdentifierNode: token=Token(IDENTIFIER, 'i', L4C13), name=i
+              NumberNode: token=Token(NUMBER, 1, L4C17), value=1
+          IfNode: condition=BinOp(Ident(i) > Number(5)), then_block=BlockNode([BreakNode(expr=None)]), else_block=None
+            BinaryOpNode: left=Ident(i), op_token=Token(GT, '>', L5C14), right=Number(5)
+              IdentifierNode: token=Token(IDENTIFIER, 'i', L5C12), name=i
+              NumberNode: token=Token(NUMBER, 5, L5C16), value=5
+            BlockNode
+              BreakNode: expr=None

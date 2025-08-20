@@ -1,0 +1,13 @@
+# 抽象语法树 (Abstract Syntax Tree)
+# 生成时间: 2025-08-20 19:38:45.155472
+
+ProgramNode
+  FunctionDeclNode: token=Token(IDENTIFIER, 'main', L1C4), return_type=None, body=BlockNode([LetDeclNode(VarInternalDecl(a) = Number(42)), LetDeclNode(VarInternalDecl(a) = Number(10)), LetDeclNode(VarInternalDecl(a) = Number(5)), LetDeclNode(VarInternalDecl(b): i32), AssignNode(to=Ident(c), expr=Number(15)), LetDeclNode(VarInternalDecl(x) = Number(100))]), name=main
+    BlockNode
+      LetDeclNode: var_internal_decl=VarInternalDecl(a), var_type=None, init_expr=Number(42)
+      LetDeclNode: var_internal_decl=VarInternalDecl(a), var_type=None, init_expr=Number(10)
+      LetDeclNode: var_internal_decl=VarInternalDecl(a), var_type=None, init_expr=Number(5)
+      LetDeclNode: var_internal_decl=VarInternalDecl(b), var_type=i32, init_expr=None
+      AssignNode: assignable_element=Ident(c), expr=Number(15)
+        NumberNode: token=Token(NUMBER, 15, L8C9), value=15
+      LetDeclNode: var_internal_decl=VarInternalDecl(x), var_type=None, init_expr=Number(100)

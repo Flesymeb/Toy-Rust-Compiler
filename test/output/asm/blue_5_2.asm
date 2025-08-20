@@ -16,13 +16,13 @@ lw $s0, 8($sp)
 li $s1, 1
 	add $s0, $s0, $s1
 li $s2, 1
-	sw $s2, 24($sp)
+	sw $s2, 16($sp)
 L0:
-lw $s0, 24($sp)
+lw $s0, 16($sp)
 lw $s1, 20($sp)
 	slt $s0, $s0, $s1
 	beq $s0, $zero, L1
-lw $s0, 24($sp)
+lw $s0, 16($sp)
 	sw $s0, i
 lw $s1, 8($sp)
 li $s2, 1

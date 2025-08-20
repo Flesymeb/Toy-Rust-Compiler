@@ -16,13 +16,13 @@ li $s1, 2
 	mul $s2, $s0, $s1
 li $s3, 3
 	add $s2, $s2, $s3
-	sw $s2, 16($sp)
+	sw $s2, 4($sp)
 li $s4, 4
 li $s5, 5
 	mul $s6, $s4, $s5
-lw $s7, 16($sp)
+lw $s7, 4($sp)
 	add $s7, $s7, $s6
-	sw $s7, 16($sp)
+	sw $s7, 4($sp)
 li $s6, None
 	sw $s6, z
 	j end

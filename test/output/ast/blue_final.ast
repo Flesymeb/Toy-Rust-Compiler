@@ -1,0 +1,47 @@
+# 抽象语法树 (Abstract Syntax Tree)
+# 生成时间: 2025-08-20 19:38:29.646273
+
+ProgramNode
+  FunctionDeclNode: token=Token(IDENTIFIER, 'test_group5', L2C4), return_type=None, body=BlockNode([LetDeclNode(VarInternalDecl(mut sum1) = Number(0)), ForNode(var=VarInternalDecl(mut i), in=Range(Number(1)..Number(10)), body=BlockNode([AssignNode(to=Ident(sum1), expr=BinOp(Ident(sum1) + Ident(i)))])), LetDeclNode(VarInternalDecl(mut sum2) = Number(0)), LetDeclNode(VarInternalDecl(mut i) = Number(0)), LoopNode(body=BlockNode([AssignNode(to=Ident(i), expr=BinOp(Ident(i) + Number(1))), IfNode(cond=BinOp(Ident(i) > Number(10)), then=BlockNode([BreakNode(expr=None)]), else_if=[], else=None), IfNode(cond=BinOp(Ident(i) == Number(5)), then=BlockNode([ContinueNode]), else_if=[], else=None), AssignNode(to=Ident(sum2), expr=BinOp(Ident(sum2) + Ident(i)))])), ReturnNode(expr=None)]), name=test_group5
+    BlockNode
+      LetDeclNode: var_internal_decl=VarInternalDecl(mut sum1), var_type=None, init_expr=Number(0)
+      ForNode: var_internal_decl=VarInternalDecl(mut i), iterable=Range(Number(1)..Number(10)), body=BlockNode([AssignNode(to=Ident(sum1), expr=BinOp(Ident(sum1) + Ident(i)))])
+        BlockNode
+          AssignNode: assignable_element=Ident(sum1), expr=BinOp(Ident(sum1) + Ident(i))
+            BinaryOpNode: left=Ident(sum1), op_token=Token(PLUS, '+', L6C21), right=Ident(i)
+              IdentifierNode: token=Token(IDENTIFIER, 'sum1', L6C16), name=sum1
+              IdentifierNode: token=Token(IDENTIFIER, 'i', L6C23), name=i
+      LetDeclNode: var_internal_decl=VarInternalDecl(mut sum2), var_type=None, init_expr=Number(0)
+      LetDeclNode: var_internal_decl=VarInternalDecl(mut i), var_type=None, init_expr=Number(0)
+      LoopNode: body=BlockNode([AssignNode(to=Ident(i), expr=BinOp(Ident(i) + Number(1))), IfNode(cond=BinOp(Ident(i) > Number(10)), then=BlockNode([BreakNode(expr=None)]), else_if=[], else=None), IfNode(cond=BinOp(Ident(i) == Number(5)), then=BlockNode([ContinueNode]), else_if=[], else=None), AssignNode(to=Ident(sum2), expr=BinOp(Ident(sum2) + Ident(i)))])
+        BlockNode
+          AssignNode: assignable_element=Ident(i), expr=BinOp(Ident(i) + Number(1))
+            BinaryOpNode: left=Ident(i), op_token=Token(PLUS, '+', L13C15), right=Number(1)
+              IdentifierNode: token=Token(IDENTIFIER, 'i', L13C13), name=i
+              NumberNode: token=Token(NUMBER, 1, L13C17), value=1
+          IfNode: condition=BinOp(Ident(i) > Number(10)), then_block=BlockNode([BreakNode(expr=None)]), else_block=None
+            BinaryOpNode: left=Ident(i), op_token=Token(GT, '>', L14C14), right=Number(10)
+              IdentifierNode: token=Token(IDENTIFIER, 'i', L14C12), name=i
+              NumberNode: token=Token(NUMBER, 10, L14C16), value=10
+            BlockNode
+              BreakNode: expr=None
+          IfNode: condition=BinOp(Ident(i) == Number(5)), then_block=BlockNode([ContinueNode]), else_block=None
+            BinaryOpNode: left=Ident(i), op_token=Token(EQ, '==', L17C14), right=Number(5)
+              IdentifierNode: token=Token(IDENTIFIER, 'i', L17C12), name=i
+              NumberNode: token=Token(NUMBER, 5, L17C17), value=5
+            BlockNode
+              ContinueNode
+          AssignNode: assignable_element=Ident(sum2), expr=BinOp(Ident(sum2) + Ident(i))
+            BinaryOpNode: left=Ident(sum2), op_token=Token(PLUS, '+', L20C21), right=Ident(i)
+              IdentifierNode: token=Token(IDENTIFIER, 'sum2', L20C16), name=sum2
+              IdentifierNode: token=Token(IDENTIFIER, 'i', L20C23), name=i
+      ReturnNode: expr=None
+  FunctionDeclNode: token=Token(IDENTIFIER, 'test_group7', L27C4), return_type=i32, body=FuncExprNode([LetDeclNode(VarInternalDecl(mut z) = FuncExprNode([LetDeclNode(VarInternalDecl(mut t) = BinOp(BinOp(Ident(x) * Ident(x)) + Ident(x))), AssignNode(to=Ident(t), expr=BinOp(Ident(t) + BinOp(Ident(x) * Ident(y)))), ExprStmtNode(Ident(t))])), LetDeclNode(VarInternalDecl(mut result) = IfExprNode(cond=BinOp(Ident(z) > Number(10)), then=FuncExprNode([ExprStmtNode(BinOp(Ident(z) - Number(5)))]), else=FuncExprNode([ExprStmtNode(BinOp(Ident(z) + Number(5)))]))), ReturnNode(expr=Ident(result))]), name=test_group7
+    ParamNode: name_internal=VarInternalDecl(mut x), param_type=i32
+    ParamNode: name_internal=VarInternalDecl(mut y), param_type=i32
+  FunctionDeclNode: token=Token(IDENTIFIER, 'main', L47C4), return_type=None, body=BlockNode([ExprStmtNode(FuncCall(name=test_group5, args=[])), LetDeclNode(VarInternalDecl(result) = FuncCall(name=test_group7, args=[Number(3), Number(4)])), ReturnNode(expr=None)]), name=main
+    BlockNode
+      ExprStatementNode: expr=FuncCall(name=test_group5, args=[])
+        FunctionCallNode: func_expr=Ident(test_group5)
+      LetDeclNode: var_internal_decl=VarInternalDecl(result), var_type=None, init_expr=FuncCall(name=test_group7, args=[Number(3), Number(4)])
+      ReturnNode: expr=None

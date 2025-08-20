@@ -1,0 +1,6 @@
+# 抽象语法树 (Abstract Syntax Tree)
+# 生成时间: 2025-08-20 19:37:06.419524
+
+ProgramNode
+  FunctionDeclNode: token=Token(IDENTIFIER, 'main', L1C4), return_type=i32, body=FuncExprNode([ReturnNode(expr=Number(1))]), name=main
+    FunctionExprNode

@@ -1,0 +1,7 @@
+# 抽象语法树 (Abstract Syntax Tree)
+# 生成时间: 2025-08-20 19:38:29.294245
+
+ProgramNode
+  FunctionDeclNode: token=Token(IDENTIFIER, 'main', L2C4), return_type=None, body=BlockNode([LetDeclNode(VarInternalDecl(mut z) = FuncExprNode([LetDeclNode(VarInternalDecl(mut t) = BinOp(BinOp(Number(1) * Number(2)) + Number(3))), AssignNode(to=Ident(t), expr=BinOp(Ident(t) + BinOp(Number(4) * Number(5)))), ExprStmtNode(Ident(t))]))]), name=main
+    BlockNode
+      LetDeclNode: var_internal_decl=VarInternalDecl(mut z), var_type=None, init_expr=FuncExprNode([LetDeclNode(VarInternalDecl(mut t) = BinOp(BinOp(Number(1) * Number(2)) + Number(3))), AssignNode(to=Ident(t), expr=BinOp(Ident(t) + BinOp(Number(4) * Number(5)))), ExprStmtNode(Ident(t))])

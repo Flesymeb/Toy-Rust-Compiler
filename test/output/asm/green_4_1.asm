@@ -7,7 +7,7 @@ lui $sp, 0x1004
 j main
 
 main:
-lw $s0, 4($sp)
+lw $s0, 0($sp)
 li $s1, 0
 	slt $s0, $s1, $s0
 	beq $s0, $zero, L0

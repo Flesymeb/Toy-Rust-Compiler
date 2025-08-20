@@ -1,0 +1,6 @@
+# 抽象语法树 (Abstract Syntax Tree)
+# 生成时间: 2025-08-20 19:38:29.012804
+
+ProgramNode
+  FunctionDeclNode: token=Token(IDENTIFIER, 'program_5_2', L2C4), return_type=None, body=BlockNode([ForNode(var=VarInternalDecl(mut i), in=Range(Number(1)..BinOp(Ident(n) + Number(1))), body=BlockNode([AssignNode(to=Ident(n), expr=BinOp(Ident(n) - Number(1)))]))]), name=program_5_2
+    ParamNode: name_internal=VarInternalDecl(mut n), param_type=i32

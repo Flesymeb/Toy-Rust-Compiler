@@ -1,0 +1,14 @@
+# 抽象语法树 (Abstract Syntax Tree)
+# 生成时间: 2025-08-20 19:37:06.628506
+
+ProgramNode
+  FunctionDeclNode: token=Token(IDENTIFIER, 'main', L1C4), return_type=None, body=BlockNode([ExprStmtNode(Number(0)), ExprStmtNode(Number(1)), ExprStmtNode(Number(2)), ExprStmtNode(Number(3))]), name=main
+    BlockNode
+      ExprStatementNode: expr=Number(0)
+        NumberNode: token=Token(NUMBER, 0, L1C13), value=0
+      ExprStatementNode: expr=Number(1)
+        NumberNode: token=Token(NUMBER, 1, L1C17), value=1
+      ExprStatementNode: expr=Number(2)
+        NumberNode: token=Token(NUMBER, 2, L1C23), value=2
+      ExprStatementNode: expr=Number(3)
+        NumberNode: token=Token(NUMBER, 3, L1C31), value=3

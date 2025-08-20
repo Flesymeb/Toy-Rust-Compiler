@@ -1,0 +1,36 @@
+# 抽象语法树 (Abstract Syntax Tree)
+# 生成时间: 2025-08-20 19:38:29.497821
+
+ProgramNode
+  FunctionDeclNode: token=Token(IDENTIFIER, 'main', L1C4), return_type=None, body=BlockNode([LetDeclNode(VarInternalDecl(mut a): i32 = Number(1)), LetDeclNode(VarInternalDecl(mut b) = Number(2)), LetDeclNode(VarInternalDecl(mut i): i32 = Number(0)), LoopNode(body=BlockNode([AssignNode(to=Ident(i), expr=BinOp(Ident(i) + Number(1))), IfNode(cond=BinOp(Ident(i) > Number(5)), then=BlockNode([BreakNode(expr=None)]), else_if=[], else=None), IfNode(cond=BinOp(BinOp(Ident(i) % Number(2)) == Number(0)), then=BlockNode([ContinueNode]), else_if=[], else=None), AssignNode(to=Ident(a), expr=BinOp(Ident(a) + Ident(i)))])), LetDeclNode(VarInternalDecl(mut a) = Number(10)), AssignNode(to=Ident(b), expr=Ident(a))]), name=main
+    BlockNode
+      LetDeclNode: var_internal_decl=VarInternalDecl(mut a), var_type=i32, init_expr=Number(1)
+      LetDeclNode: var_internal_decl=VarInternalDecl(mut b), var_type=None, init_expr=Number(2)
+      LetDeclNode: var_internal_decl=VarInternalDecl(mut i), var_type=i32, init_expr=Number(0)
+      LoopNode: body=BlockNode([AssignNode(to=Ident(i), expr=BinOp(Ident(i) + Number(1))), IfNode(cond=BinOp(Ident(i) > Number(5)), then=BlockNode([BreakNode(expr=None)]), else_if=[], else=None), IfNode(cond=BinOp(BinOp(Ident(i) % Number(2)) == Number(0)), then=BlockNode([ContinueNode]), else_if=[], else=None), AssignNode(to=Ident(a), expr=BinOp(Ident(a) + Ident(i)))])
+        BlockNode
+          AssignNode: assignable_element=Ident(i), expr=BinOp(Ident(i) + Number(1))
+            BinaryOpNode: left=Ident(i), op_token=Token(PLUS, '+', L9C15), right=Number(1)
+              IdentifierNode: token=Token(IDENTIFIER, 'i', L9C13), name=i
+              NumberNode: token=Token(NUMBER, 1, L9C17), value=1
+          IfNode: condition=BinOp(Ident(i) > Number(5)), then_block=BlockNode([BreakNode(expr=None)]), else_block=None
+            BinaryOpNode: left=Ident(i), op_token=Token(GT, '>', L10C14), right=Number(5)
+              IdentifierNode: token=Token(IDENTIFIER, 'i', L10C12), name=i
+              NumberNode: token=Token(NUMBER, 5, L10C16), value=5
+            BlockNode
+              BreakNode: expr=None
+          IfNode: condition=BinOp(BinOp(Ident(i) % Number(2)) == Number(0)), then_block=BlockNode([ContinueNode]), else_block=None
+            BinaryOpNode: left=BinOp(Ident(i) % Number(2)), op_token=Token(EQ, '==', L13C18), right=Number(0)
+              BinaryOpNode: left=Ident(i), op_token=Token(MOD, '%', L13C14), right=Number(2)
+                IdentifierNode: token=Token(IDENTIFIER, 'i', L13C12), name=i
+                NumberNode: token=Token(NUMBER, 2, L13C16), value=2
+              NumberNode: token=Token(NUMBER, 0, L13C21), value=0
+            BlockNode
+              ContinueNode
+          AssignNode: assignable_element=Ident(a), expr=BinOp(Ident(a) + Ident(i))
+            BinaryOpNode: left=Ident(a), op_token=Token(PLUS, '+', L16C15), right=Ident(i)
+              IdentifierNode: token=Token(IDENTIFIER, 'a', L16C13), name=a
+              IdentifierNode: token=Token(IDENTIFIER, 'i', L16C17), name=i
+      LetDeclNode: var_internal_decl=VarInternalDecl(mut a), var_type=None, init_expr=Number(10)
+      AssignNode: assignable_element=Ident(b), expr=Ident(a)
+        IdentifierNode: token=Token(IDENTIFIER, 'a', L21C9), name=a

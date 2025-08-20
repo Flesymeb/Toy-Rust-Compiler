@@ -16,12 +16,12 @@ program_7_2:
 lw $s0, x
 	mul $s1, $s0, $s0
 	add $s1, $s1, $s0
-	sw $s1, 24($sp)
+	sw $s1, 20($sp)
 lw $s2, y
 	mul $s3, $s0, $s2
-lw $s4, 24($sp)
+lw $s4, 20($sp)
 	add $s5, $s4, $s3
-	sw $s5, 24($sp)
+	sw $s5, 20($sp)
 	add $v0, $s4, $zero
 	lw $ra, 4($sp)
 	jr $ra

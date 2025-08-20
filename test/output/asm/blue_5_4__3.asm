@@ -25,7 +25,7 @@ lw $s0, i
 li $s1, 1
 	add $s2, $s0, $s1
 	sw $s2, i
-lw $s3, 4($sp)
+lw $s3, 0($sp)
 li $s4, 0
 	xor $s3, $s3, $s4
 	sltiu $s3, $s3, 1

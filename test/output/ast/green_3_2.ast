@@ -1,0 +1,50 @@
+# 抽象语法树 (Abstract Syntax Tree)
+# 生成时间: 2025-08-20 19:37:06.701798
+
+ProgramNode
+  FunctionDeclNode: token=Token(IDENTIFIER, 'main', L1C4), return_type=None, body=BlockNode([ExprStmtNode(BinOp(BinOp(Number(1) * Number(2)) / Number(3))), ExprStmtNode(BinOp(Number(4) + BinOp(Number(5) / Number(6)))), ExprStmtNode(BinOp(Number(7) < Number(8))), ExprStmtNode(BinOp(Number(9) > Number(10))), ExprStmtNode(BinOp(Number(11) == Number(12))), ExprStmtNode(BinOp(Number(13) != Number(14))), ExprStmtNode(BinOp(BinOp(BinOp(Number(1) * Number(2)) + BinOp(Number(3) * Number(4))) != BinOp(BinOp(Number(4) / Number(2)) - BinOp(Number(3) / Number(1)))))]), name=main
+    BlockNode
+      ExprStatementNode: expr=BinOp(BinOp(Number(1) * Number(2)) / Number(3))
+        BinaryOpNode: left=BinOp(Number(1) * Number(2)), op_token=Token(DIV, '/', L1C16), right=Number(3)
+          BinaryOpNode: left=Number(1), op_token=Token(MUL, '*', L1C14), right=Number(2)
+            NumberNode: token=Token(NUMBER, 1, L1C13), value=1
+            NumberNode: token=Token(NUMBER, 2, L1C15), value=2
+          NumberNode: token=Token(NUMBER, 3, L1C17), value=3
+      ExprStatementNode: expr=BinOp(Number(4) + BinOp(Number(5) / Number(6)))
+        BinaryOpNode: left=Number(4), op_token=Token(PLUS, '+', L1C21), right=BinOp(Number(5) / Number(6))
+          NumberNode: token=Token(NUMBER, 4, L1C20), value=4
+          BinaryOpNode: left=Number(5), op_token=Token(DIV, '/', L1C23), right=Number(6)
+            NumberNode: token=Token(NUMBER, 5, L1C22), value=5
+            NumberNode: token=Token(NUMBER, 6, L1C24), value=6
+      ExprStatementNode: expr=BinOp(Number(7) < Number(8))
+        BinaryOpNode: left=Number(7), op_token=Token(LT, '<', L1C28), right=Number(8)
+          NumberNode: token=Token(NUMBER, 7, L1C27), value=7
+          NumberNode: token=Token(NUMBER, 8, L1C29), value=8
+      ExprStatementNode: expr=BinOp(Number(9) > Number(10))
+        BinaryOpNode: left=Number(9), op_token=Token(GT, '>', L1C33), right=Number(10)
+          NumberNode: token=Token(NUMBER, 9, L1C32), value=9
+          NumberNode: token=Token(NUMBER, 10, L1C34), value=10
+      ExprStatementNode: expr=BinOp(Number(11) == Number(12))
+        BinaryOpNode: left=Number(11), op_token=Token(EQ, '==', L1C40), right=Number(12)
+          NumberNode: token=Token(NUMBER, 11, L1C38), value=11
+          NumberNode: token=Token(NUMBER, 12, L1C42), value=12
+      ExprStatementNode: expr=BinOp(Number(13) != Number(14))
+        BinaryOpNode: left=Number(13), op_token=Token(NE, '!=', L1C48), right=Number(14)
+          NumberNode: token=Token(NUMBER, 13, L1C46), value=13
+          NumberNode: token=Token(NUMBER, 14, L1C50), value=14
+      ExprStatementNode: expr=BinOp(BinOp(BinOp(Number(1) * Number(2)) + BinOp(Number(3) * Number(4))) != BinOp(BinOp(Number(4) / Number(2)) - BinOp(Number(3) / Number(1))))
+        BinaryOpNode: left=BinOp(BinOp(Number(1) * Number(2)) + BinOp(Number(3) * Number(4))), op_token=Token(NE, '!=', L1C61), right=BinOp(BinOp(Number(4) / Number(2)) - BinOp(Number(3) / Number(1)))
+          BinaryOpNode: left=BinOp(Number(1) * Number(2)), op_token=Token(PLUS, '+', L1C57), right=BinOp(Number(3) * Number(4))
+            BinaryOpNode: left=Number(1), op_token=Token(MUL, '*', L1C55), right=Number(2)
+              NumberNode: token=Token(NUMBER, 1, L1C54), value=1
+              NumberNode: token=Token(NUMBER, 2, L1C56), value=2
+            BinaryOpNode: left=Number(3), op_token=Token(MUL, '*', L1C59), right=Number(4)
+              NumberNode: token=Token(NUMBER, 3, L1C58), value=3
+              NumberNode: token=Token(NUMBER, 4, L1C60), value=4
+          BinaryOpNode: left=BinOp(Number(4) / Number(2)), op_token=Token(MINUS, '-', L1C66), right=BinOp(Number(3) / Number(1))
+            BinaryOpNode: left=Number(4), op_token=Token(DIV, '/', L1C64), right=Number(2)
+              NumberNode: token=Token(NUMBER, 4, L1C63), value=4
+              NumberNode: token=Token(NUMBER, 2, L1C65), value=2
+            BinaryOpNode: left=Number(3), op_token=Token(DIV, '/', L1C68), right=Number(1)
+              NumberNode: token=Token(NUMBER, 3, L1C67), value=3
+              NumberNode: token=Token(NUMBER, 1, L1C69), value=1
