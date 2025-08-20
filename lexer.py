@@ -35,11 +35,13 @@ class Token:
 TT_KEYWORD = "KEYWORD"
 TT_IDENTIFIER = "IDENTIFIER"
 TT_NUMBER = "NUMBER"
+TT_STRING = "STRING"  # 添加字符串类型
 TT_ASSIGN = "ASSIGN"  # =
 TT_PLUS = "PLUS"  # +
 TT_MINUS = "MINUS"  # -
 TT_MUL = "MUL"  # *
 TT_DIV = "DIV"  # /
+TT_MOD = "MOD"  # %
 TT_EQ = "EQ"  # ==
 TT_GT = "GT"  # >
 TT_GTE = "GTE"  # >=
@@ -157,6 +159,38 @@ class Lexer:
         else:
             return Token(TT_IDENTIFIER, result, self.line, start_col)
 
+    def string(self):
+        """处理字符串字面量"""
+        start_col = self.column
+        self.advance()  # 跳过开头的引号
+        string_value = ""
+        while self.current_char is not None and self.current_char != '"':
+            # 处理转义字符
+            if self.current_char == "\\":
+                self.advance()
+                if self.current_char == "n":
+                    string_value += "\n"
+                elif self.current_char == "t":
+                    string_value += "\t"
+                elif self.current_char == "r":
+                    string_value += "\r"
+                elif self.current_char == "\\":
+                    string_value += "\\"
+                elif self.current_char == '"':
+                    string_value += '"'
+                else:
+                    string_value += "\\" + self.current_char
+            else:
+                string_value += self.current_char
+            self.advance()
+
+        # 检查是否正常结束（遇到结束引号）
+        if self.current_char != '"':
+            raise Exception(f"Unterminated string at L{self.line}C{start_col}")
+
+        self.advance()  # 跳过结束的引号
+        return Token(TT_STRING, string_value, self.line, start_col)
+
     def get_next_token(self):
         """获取下一个 Token"""
         while self.current_char is not None:
@@ -169,6 +203,11 @@ class Lexer:
                 self.skip_comment()
                 continue
             start_col = self.column
+
+            # 处理字符串字面量
+            if self.current_char == '"':
+                return self.string()
+
             # 多字符操作符优先
             if self.current_char == "=" and self.peek() == "=":
                 self.advance()
@@ -210,6 +249,9 @@ class Lexer:
             if self.current_char == "/":
                 self.advance()
                 return Token(TT_DIV, "/", self.line, start_col)
+            if self.current_char == "%":
+                self.advance()
+                return Token(TT_MOD, "%", self.line, start_col)
             if self.current_char == ">":
                 self.advance()
                 return Token(TT_GT, ">", self.line, start_col)

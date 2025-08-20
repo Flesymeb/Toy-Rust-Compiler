@@ -18,6 +18,7 @@ from lexer import (
     TT_MINUS,
     TT_MUL,
     TT_DIV,
+    TT_MOD,
     TT_EQ,
     TT_NE,
     TT_LT,
@@ -32,6 +33,7 @@ from lexer import (
     TT_COLON,
     TT_COMMA,
     TT_ARROW,
+    TT_DOTDOT,
 )
 from parser_nodes import *
 from ir_generator import IRGenerator
@@ -69,6 +71,10 @@ class Parser:
             self.irgen.generate(program)
         return program
 
+    # 为了兼容旧代码，添加一个parse方法作为parse_program的别名
+    def parse(self):
+        return self.parse_program()
+
     # --- 1.1 基础程序 ---
     def parse_program(self):
         declarations = []
@@ -91,7 +97,11 @@ class Parser:
             return_type = self.parse_type()
         # 支持表达式块或语句块
         if self.current_token.type == TT_LBRACE:
-            body = self.parse_block()
+            # 支持7.2：函数表达式块作为函数体
+            if return_type:
+                body = self.parse_function_expr_block()
+            else:
+                body = self.parse_block()
         else:
             raise ParseError("函数体必须是语句块")
         return FunctionDeclNode(name_token, params, return_type, body)
@@ -152,6 +162,24 @@ class Parser:
             and self.current_token.value == "while"
         ):
             return self.parse_while_statement()
+        # for
+        if self.current_token.type == TT_KEYWORD and self.current_token.value == "for":
+            return self.parse_for_statement()
+        # loop
+        if self.current_token.type == TT_KEYWORD and self.current_token.value == "loop":
+            return self.parse_loop_statement()
+        # break
+        if (
+            self.current_token.type == TT_KEYWORD
+            and self.current_token.value == "break"
+        ):
+            return self.parse_break_statement()
+        # continue
+        if (
+            self.current_token.type == TT_KEYWORD
+            and self.current_token.value == "continue"
+        ):
+            return self.parse_continue_statement()
         # return
         if (
             self.current_token.type == TT_KEYWORD
@@ -197,6 +225,45 @@ class Parser:
         body = self.parse_block()
         return WhileNode(condition, body)
 
+    def parse_for_statement(self):
+        self.consume(TT_KEYWORD, "for")
+        # 解析for循环变量
+        is_mutable = False
+        if self.current_token.type == TT_KEYWORD and self.current_token.value == "mut":
+            is_mutable = True
+            self.advance()
+        name_token = self.consume(TT_IDENTIFIER)
+        var_internal = VariableInternalDeclNode(is_mutable, name_token)
+
+        # 解析 in 关键字
+        self.consume(TT_KEYWORD, "in")
+
+        # 解析可迭代结构 (目前仅支持 range: expr..expr)
+        start_expr = self.parse_expression()
+        self.consume(TT_DOTDOT)
+        end_expr = self.parse_expression()
+        range_node = RangeNode(start_expr, end_expr)
+
+        # 解析循环体
+        body = self.parse_block()
+
+        return ForNode(var_internal, range_node, body)
+
+    def parse_loop_statement(self):
+        self.consume(TT_KEYWORD, "loop")
+        body = self.parse_block()
+        return LoopNode(body)
+
+    def parse_break_statement(self):
+        self.consume(TT_KEYWORD, "break")
+        self.consume(TT_SEMICOLON)
+        return BreakNode()
+
+    def parse_continue_statement(self):
+        self.consume(TT_KEYWORD, "continue")
+        self.consume(TT_SEMICOLON)
+        return ContinueNode()
+
     def parse_return_statement(self):
         self.consume(TT_KEYWORD, "return")
         # 支持 return; 或 return expr;
@@ -219,11 +286,20 @@ class Parser:
         if self.current_token.type == TT_COLON:
             self.advance()
             var_type = self.parse_type()
-        # 初始化
+
+        # 初始化 - 支持2.3规则：变量声明赋值语句
         init_expr = None
         if self.current_token.type == TT_ASSIGN:
             self.advance()
             init_expr = self.parse_expression()
+        elif var_type is None:
+            # 如果没有显式类型且没有初始化表达式，则报错
+            # 因为类型无法推导
+            raise ParseError(
+                f"变量 {name_token.value} 没有显式类型且没有初始化表达式，无法推导类型 at L{name_token.line}C{name_token.column}"
+            )
+
+        # 无论表达式是什么类型，都必须要分号
         self.consume(TT_SEMICOLON)
         var_internal = VariableInternalDeclNode(is_mutable, name_token)
         return LetDeclNode(var_internal, var_type, init_expr)
@@ -260,6 +336,14 @@ class Parser:
 
     # --- 表达式 ---
     def parse_expression(self):
+        # 选择表达式 (if作为表达式)
+        if self.current_token.type == TT_KEYWORD and self.current_token.value == "if":
+            return self.parse_if_expression()
+
+        # 函数表达式块
+        if self.current_token.type == TT_LBRACE:
+            return self.parse_function_expr_block()
+
         return self.parse_comparison()
 
     def parse_comparison(self):
@@ -282,7 +366,7 @@ class Parser:
 
     def parse_term(self):
         node = self.parse_factor()
-        while self.current_token.type in (TT_MUL, TT_DIV):
+        while self.current_token.type in (TT_MUL, TT_DIV, TT_MOD):
             op_token = self.current_token
             self.advance()
             right = self.parse_factor()
@@ -335,3 +419,33 @@ class Parser:
             right = self.parse_term()
             node = BinaryOpNode(node, op_token, right)
         return node
+
+    # --- 支持7.1: 函数表达式块 ---
+    def parse_function_expr_block(self):
+        self.consume(TT_LBRACE)
+        statements = []
+
+        # 解析语句序列
+        while self.current_token.type != TT_RBRACE:
+            statements.append(self.parse_statement())
+
+        self.consume(TT_RBRACE)
+        return FunctionExprNode(statements)
+
+    def peek_next_is_rbrace(self):
+        # 不再需要这个函数，但保留为空实现以避免出错
+        return False
+
+    # --- 支持7.3: 选择表达式 ---
+    def parse_if_expression(self):
+        self.consume(TT_KEYWORD, "if")
+        condition = self.parse_expression()
+
+        # 解析then块
+        then_block = self.parse_function_expr_block()
+
+        # 解析else块
+        self.consume(TT_KEYWORD, "else")
+        else_block = self.parse_function_expr_block()
+
+        return IfExprNode(condition, then_block, else_block)

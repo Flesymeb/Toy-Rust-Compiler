@@ -244,6 +244,7 @@ class IRGenerator:
             TT_MINUS: "SUB",
             TT_MUL: "MUL",
             TT_DIV: "DIV",
+            TT_MOD: "MOD",  # 添加对模运算的支持
             TT_EQ: "EQ",
             TT_NE: "NE",
             TT_LT: "LT",
@@ -469,6 +470,50 @@ class IRGenerator:
             0
         ]  # 获取 continue 跳转目标 (start_label 或 increment_label)
         self.emit("GOTO", None, None, continue_label)
+
+    # --- 7.1 函数表达式块 ---
+    def visit_FunctionExprNode(self, node: FunctionExprNode):
+        # 处理函数表达式块内的所有语句
+        for i, item in enumerate(node.items):
+            # 最后一项是表达式，作为返回值
+            if i == len(node.items) - 1 and isinstance(item, ExpressionNode):
+                result = self.visit(item)
+                return result
+            else:
+                self.visit(item)
+
+        # 如果没有最后的表达式，则返回空
+        return None
+
+    # --- 7.3 选择表达式 ---
+    def visit_IfExprNode(self, node: IfExprNode):
+        # 生成条件判断的中间代码
+        condition_temp = self.visit(node.condition)
+
+        # 创建标签
+        then_label = self.new_label()
+        else_label = self.new_label()
+        end_label = self.new_label()
+
+        # 生成条件跳转代码
+        self.emit("IF_FALSE_GOTO", condition_temp, None, else_label)
+
+        # 生成then部分代码
+        self.emit("LABEL", None, None, then_label)
+        then_result = self.visit(node.then_expr_block)
+        result_temp = self.new_temp()
+        self.emit("ASSIGN", then_result, None, result_temp)
+        self.emit("GOTO", None, None, end_label)
+
+        # 生成else部分代码
+        self.emit("LABEL", None, None, else_label)
+        else_result = self.visit(node.else_expr_block)
+        self.emit("ASSIGN", else_result, None, result_temp)
+
+        # 结束标签
+        self.emit("LABEL", None, None, end_label)
+
+        return result_temp
 
     # --- 复合类型相关 (需要根据目标架构细化) ---
 

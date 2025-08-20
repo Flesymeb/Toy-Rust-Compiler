@@ -3,9 +3,10 @@ Description  : 适用于单遍编译的Rust-like语言词法分析器 (修复版
 Author       : Hyoung (修复: GitHub Copilot)
 Date         : 2025-08-18 18:54:14
 LastEditTime : 2025-08-21
-FilePath     : \\课程设计\\rust-like-compiler\\temp_main.py
+FilePath     : \\课程设计\\rust-like-compiler\\main_fixed.py
 """
 
+# main_fixed.py
 # 课设主程序入口，组织编译流程，修复了导入问题
 
 import sys
