@@ -119,11 +119,17 @@ class Parser:
                 is_mutable = True
                 self.advance()
             name_token = self.consume(TT_IDENTIFIER)
+
+            # 创建变量内部声明节点
+            name_internal = VariableInternalDeclNode(is_mutable, name_token)
+
             # 类型
+            param_type = None
             if self.current_token.type == TT_COLON:
                 self.advance()
-                self.parse_type()  # 类型信息可选，暂不存储
-            params.append(ParamNode(name_token, is_mutable))
+                param_type = self.parse_type()  # 解析并存储类型
+
+            params.append(ParamNode(name_internal, param_type))
             if self.current_token.type == TT_COMMA:
                 self.advance()
             else:

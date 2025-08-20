@@ -35,7 +35,7 @@ try:
     # 导入其他编译器组件
     from ir_generator import IRGenerator
     from ir_writer import save_ir_to_file
-    from codegen2 import MIPSCodeGenerator
+    from codegen2mips import MIPSCodeGenerator
 
     print("编译器模块导入成功")
 except ImportError as e:

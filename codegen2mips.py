@@ -3,7 +3,7 @@ Description  : 适用于单遍编译的Rust-like语言MIPS汇编代码生成器
 Author       : Hyoung
 Date         : 2025-08-19 17:44:49
 LastEditTime : 2025-08-19 17:44:49
-FilePath     : \\课程设计\\rust-like-compiler\\codegen2.py
+FilePath     : \\课程设计\\rust-like-compiler\\codegen2mips.py
 """
 
 from collections import defaultdict

@@ -1,0 +1,176 @@
+# Rust-like 语言错误处理规则 (Error Handling Rules)
+# 基于PDF文档的精确语法定义的错误处理
+
+# ===== 语法错误类型及恢复策略 =====
+
+# 1. 函数声明错误
+ERROR_FN_MISSING_NAME:
+  Pattern: fn ( ... )
+  Message: "函数声明缺少函数名"
+  Recovery: 插入默认函数名并继续解析
+
+ERROR_FN_MISSING_PARAMS:
+  Pattern: fn <ID> { ... }
+  Message: "函数声明缺少参数列表"
+  Recovery: 插入空参数列表 () 并继续解析
+
+ERROR_FN_MISSING_BODY:
+  Pattern: fn <ID> ( ... )
+  Message: "函数声明缺少函数体"
+  Recovery: 插入空函数体 {} 并继续解析
+
+# 2. 变量声明错误
+ERROR_LET_MISSING_NAME:
+  Pattern: let : <类型>
+  Message: "变量声明缺少变量名"
+  Recovery: 插入默认变量名并继续解析
+
+ERROR_LET_MISSING_TYPE:
+  Pattern: let <ID> : 
+  Message: "变量声明缺少类型注解"
+  Recovery: 尝试从赋值表达式推导类型
+
+ERROR_MUT_WITHOUT_ID:
+  Pattern: let mut :
+  Message: "mut关键字后缺少变量名"
+  Recovery: 插入默认变量名并继续解析
+
+# 3. 表达式错误
+ERROR_MISSING_OPERAND:
+  Pattern: <表达式> <操作符>
+  Message: "运算符缺少右操作数"
+  Recovery: 插入默认操作数(0或变量名)
+
+ERROR_UNMATCHED_PAREN:
+  Pattern: ( <表达式>
+  Message: "括号不匹配，缺少右括号"
+  Recovery: 在表达式末尾插入 )
+
+ERROR_EMPTY_PAREN:
+  Pattern: ( )
+  Message: "空括号表达式"
+  Recovery: 插入默认值 0
+
+# 4. 语句错误
+ERROR_MISSING_SEMICOLON:
+  Pattern: <语句> <下一个token>
+  Message: "语句缺少分号"
+  Recovery: 在语句末尾插入分号
+
+ERROR_INCOMPLETE_ASSIGNMENT:
+  Pattern: <ID> =
+  Message: "赋值语句缺少右值表达式"
+  Recovery: 插入默认值并继续解析
+
+# 5. 控制流错误
+ERROR_IF_MISSING_CONDITION:
+  Pattern: if { ... }
+  Message: "if语句缺少条件表达式"
+  Recovery: 插入默认条件 true
+
+ERROR_IF_MISSING_BODY:
+  Pattern: if <表达式>
+  Message: "if语句缺少语句块"
+  Recovery: 插入空语句块 {}
+
+ERROR_WHILE_MISSING_CONDITION:
+  Pattern: while { ... }
+  Message: "while循环缺少条件表达式"
+  Recovery: 插入默认条件 true
+
+ERROR_FOR_MISSING_ITERATOR:
+  Pattern: for <ID> in
+  Message: "for循环缺少迭代对象"
+  Recovery: 插入默认范围 0..10
+
+# 6. 函数调用错误
+ERROR_CALL_MISSING_ARGS:
+  Pattern: <ID> (
+  Message: "函数调用缺少参数列表结束"
+  Recovery: 插入 ) 并继续解析
+
+ERROR_CALL_EXTRA_COMMA:
+  Pattern: <ID> ( ... , )
+  Message: "函数调用参数列表末尾有多余的逗号"
+  Recovery: 忽略多余的逗号
+
+# 7. 类型错误
+ERROR_INVALID_TYPE:
+  Pattern: : <非法类型>
+  Message: "无效的类型注解"
+  Recovery: 使用默认类型 i32
+
+ERROR_ARRAY_MISSING_SIZE:
+  Pattern: [ <类型> ; ]
+  Message: "数组类型缺少大小说明"
+  Recovery: 插入默认大小 1
+
+# 8. 引用和借用错误
+ERROR_DEREF_NON_REF:
+  Pattern: * <非引用表达式>
+  Message: "试图解引用非引用类型"
+  Recovery: 移除解引用操作符
+
+ERROR_BORROW_INVALID:
+  Pattern: & <无效表达式>
+  Message: "无法借用该表达式"
+  Recovery: 包装在变量中
+
+# 9. 循环控制错误
+ERROR_BREAK_OUTSIDE_LOOP:
+  Pattern: break (不在循环中)
+  Message: "break语句必须在循环中使用"
+  Recovery: 移除break语句
+
+ERROR_CONTINUE_OUTSIDE_LOOP:
+  Pattern: continue (不在循环中)
+  Message: "continue语句必须在循环中使用"
+  Recovery: 移除continue语句
+
+# 10. 数组和元组错误
+ERROR_ARRAY_INCONSISTENT_TYPES:
+  Pattern: [ <不同类型元素> ]
+  Message: "数组元素类型不一致"
+  Recovery: 转换为第一个元素的类型
+
+ERROR_TUPLE_TRAILING_COMMA:
+  Pattern: ( <表达式> , )
+  Message: "单元素元组需要尾随逗号"
+  Recovery: 添加必要的逗号
+
+# 11. 作用域和生命周期错误
+ERROR_UNDECLARED_VARIABLE:
+  Pattern: <未声明的ID>
+  Message: "使用了未声明的变量"
+  Recovery: 自动声明为 i32 类型
+
+ERROR_IMMUTABLE_ASSIGNMENT:
+  Pattern: <不可变变量> = <表达式>
+  Message: "不能对不可变变量赋值"
+  Recovery: 将变量声明为可变
+
+# 12. 返回语句错误
+ERROR_RETURN_TYPE_MISMATCH:
+  Pattern: return <错误类型表达式>
+  Message: "返回值类型与函数声明不匹配"
+  Recovery: 进行类型转换或使用默认值
+
+ERROR_MISSING_RETURN:
+  Pattern: 函数末尾缺少return
+  Message: "有返回类型的函数必须有返回语句"
+  Recovery: 在函数末尾插入默认返回值
+
+# ===== 错误恢复策略优先级 =====
+# 1. 同步恢复：寻找下一个同步点(分号、右大括号等)
+# 2. 插入恢复：插入缺失的token
+# 3. 删除恢复：删除多余的token
+# 4. 替换恢复：替换错误的token
+
+# ===== 语义错误检查点 =====
+# 1. 类型检查：每个表达式计算后
+# 2. 作用域检查：每次变量使用时
+# 3. 控制流检查：每个语句块结束时
+# 4. 生命周期检查：引用创建和使用时
+
+# ===== 同步token列表 =====
+SYNC_TOKENS: ';', '}', 'fn', 'let', 'if', 'else', 'while', 'for', 'loop', 'return', 'break', 'continue'
