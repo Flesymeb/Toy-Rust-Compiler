@@ -116,7 +116,6 @@ rust-like-compiler/
 ├── symbol_table.py            # 符号表管理
 ├── ir_generator.py            # 中间代码生成器
 ├── codegen2mips.py            # MIPS汇编代码生成器
-├── ast_visualizer.py          # AST可视化组件
 ├── compile_all_test_cases.bat # 批量测试脚本
 ├── grammar.txt                # 语法规则BNF定义
 ├── test/                      # 测试用例目录
